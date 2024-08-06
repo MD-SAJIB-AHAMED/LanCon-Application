@@ -22,6 +22,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class ClientActivity extends AppCompatActivity {
 
@@ -52,29 +53,24 @@ public class ClientActivity extends AppCompatActivity {
         editTextServerIp = findViewById(R.id.editTextServerIp);
         buttonConnect = findViewById(R.id.buttonConnect);
 
-        buttonConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String serverIp = editTextServerIp.getText().toString();
-                clientName = editTextClientName.getText().toString();
-                if (serverIp.isEmpty() || clientName.isEmpty()) {
-                    return;
-                }
-                new Thread(new ClientThread(serverIp)).start();
+        buttonConnect.setOnClickListener(v -> {
+            String serverIp = editTextServerIp.getText().toString();
+            clientName = editTextClientName.getText().toString();
+            if (serverIp.isEmpty() || clientName.isEmpty()) {
+                return;
             }
+            new Thread(new ClientThread(serverIp)).start();
         });
-        
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = editTextMessage.getText().toString();
-                if (!message.isEmpty() && socket != null && socket.isConnected()) {
-                    new SendMessageTask().execute(message);
-                }else{
-                    editTextMessage.setText("");
-                }
+
+        buttonSend.setOnClickListener(v -> {
+            String message = editTextMessage.getText().toString();
+            if (!message.isEmpty() && socket != null && socket.isConnected()) {
+                new SendMessageTask().execute(message);
+            }else{
+                Toast.makeText(ClientActivity.this,"Something went wrong!",Toast.LENGTH_SHORT).show();
                 editTextMessage.setText("");
             }
+            editTextMessage.setText("");
         });
     }
 

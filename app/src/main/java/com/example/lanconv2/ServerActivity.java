@@ -12,7 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -24,10 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerActivity extends AppCompatActivity {
-
     private static final String TAG = "ServerActivity";
     private TextView textViewChat;
-    private TextView serverIP;
     private EditText editTextMessage;
     private EditText editTextServerName;
     private Button buttonSend;
@@ -37,6 +38,7 @@ public class ServerActivity extends AppCompatActivity {
     private ObjectInputStream objectInputStream;
     private String serverName;
     private String clientName;
+    TextView serverIP;
 
 
     @SuppressLint("MissingInflatedId")
@@ -55,6 +57,7 @@ public class ServerActivity extends AppCompatActivity {
         String value1 = bundle.getString("tag1");
         serverIP.setText("Your Server IP: "+value1);
 
+        new Thread(new ServerThread()).start();
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,15 +66,13 @@ public class ServerActivity extends AppCompatActivity {
                 if (!message.isEmpty()) {
                     new SendMessageTask().execute(message);
                 }else{
+                    Toast.makeText(ServerActivity.this,"Something went wrong!",Toast.LENGTH_SHORT).show();
                     editTextMessage.setText("");
                 }
                 editTextMessage.setText("");
             }
         });
-        new Thread(new ServerThread()).start();
     }
-
-
 
     private class ServerThread implements Runnable {
         @Override
@@ -132,6 +133,7 @@ public class ServerActivity extends AppCompatActivity {
                 Log.e(TAG, "Error in SendMessageTask", e);
             }
             return null;
+
         }
     }
 }
