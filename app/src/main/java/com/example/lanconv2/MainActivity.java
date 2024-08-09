@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ClientActivity.class);
+                intent.putExtra("tag1",cIP);
                 startActivity(intent);
             }
         });

@@ -3,6 +3,7 @@ package com.example.lanconv2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -53,11 +54,9 @@ public class ServerActivity extends AppCompatActivity {
         buttonSend = findViewById(R.id.buttonSend);
         serverIP = findViewById(R.id.serverIP);
 
-        Bundle bundle = getIntent().getExtras();
+       /* Bundle bundle = getIntent().getExtras();
         String value1 = bundle.getString("tag1");
-        serverIP.setText("Your Server IP: "+value1);
-
-        new Thread(new ServerThread()).start();
+        serverIP.append("Your Server IP: "+value1);*/
 
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,15 +71,26 @@ public class ServerActivity extends AppCompatActivity {
                 editTextMessage.setText("");
             }
         });
+        new Thread(new ServerThread()).start();
     }
 
     private class ServerThread implements Runnable {
         @Override
         public void run() {
             try {
+
+                Bundle bundle = getIntent().getExtras();
+                String value1 = bundle.getString("tag1");
+
                 serverSocket = new ServerSocket(22222);
                 Log.d(TAG, "Server Started...");
                 runOnUiThread(() -> textViewChat.append("Server Started...\n"));
+                runOnUiThread(() -> serverIP.setTextColor(Color.GREEN));
+                runOnUiThread(() -> serverIP.append("Your Server IP Address: "+value1));
+
+
+
+
 
                 clientSocket = serverSocket.accept();
                 Log.d(TAG, "Client Connected...");

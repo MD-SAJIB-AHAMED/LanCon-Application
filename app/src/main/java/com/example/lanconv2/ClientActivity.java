@@ -2,6 +2,7 @@ package com.example.lanconv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -41,6 +42,7 @@ public class ClientActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +52,11 @@ public class ClientActivity extends AppCompatActivity {
         editTextMessage = findViewById(R.id.editTextMessage);
         editTextClientName = findViewById(R.id.editTextClientName);
         buttonSend = findViewById(R.id.buttonSend);
+
         editTextServerIp = findViewById(R.id.editTextServerIp);
+
         buttonConnect = findViewById(R.id.buttonConnect);
+
 
         buttonConnect.setOnClickListener(v -> {
             String serverIp = editTextServerIp.getText().toString();
